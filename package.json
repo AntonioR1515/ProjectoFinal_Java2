@@ -1,0 +1,14 @@
+{
+  "name": "forkify",
+  "version": "1.0.0",
+  "description": "proyecto",
+  "main": "index.html",
+  "scripts": {
+    "start": "index.html"
+  },
+  "author": "AntonioR",
+  "license": "ISC",
+  "dependencies": {
+    "parcel": "^2.9.3"
+  }
+}
