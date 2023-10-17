@@ -4,11 +4,15 @@
   "description": "proyecto",
   "source": "index.html",
   "scripts": {
-    "start": "index.html"
+    "compilartodo": "parcel build index.html && parcel index.html",
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
   },
   "author": "AntonioR",
   "license": "ISC",
   "dependencies": {
+    "@babel/cli": "^7.23.0",
+    "@babel/core": "^7.23.2",
     "@parcel/core": "^2.9.3",
     "parcel": "^2.9.3"
   },
