@@ -1,0 +1,10 @@
+const renderSpinner=()=>{
+return (
+`<div class="spinner">
+<svg>
+  <use href="src/img/icons.svg#icon-loader"></use>
+</svg>
+</div> 
+`
+)}
+

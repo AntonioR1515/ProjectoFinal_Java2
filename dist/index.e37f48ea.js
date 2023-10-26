@@ -574,9 +574,9 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
 }
 
 },{}],"aenu9":[function(require,module,exports) {
-// https://forkify-api.herokuapp.com/v2
-///////////////////////////////////////
-var _recipe = require("./recipe");
+var _recipeMjs = require("./recipe.mjs");
+var _resultsJs = require("./results.js");
+var _igredientlistJs = require("./igredientlist.js");
 const recipeContainer = document.querySelector(".recipe");
 const timeout = function(s) {
     return new Promise(function(_, reject) {
@@ -585,7 +585,10 @@ const timeout = function(s) {
         }, s * 1000);
     });
 };
+// https://forkify-api.herokuapp.com/v2
+///////////////////////////////////////
 async function showRecipe(url) {
+    const Recipe_URL = ``;
     const response = await fetch(url);
     const { data } = await response.json();
     const { recipe } = data;
@@ -595,13 +598,40 @@ const URL_API = "https://forkify-api.herokuapp.com/api/v2/recipes/5ed6604591c37c
 showRecipe(URL_API).then((recipe)=>{
     console.log(recipe);
     //colocamos HTML
-    recipeContainer.insertAdacentHTML("afterbegin", (0, _recipe.recipedeteilMarkup)(recipe));
+    recipeContainer.insertAdacentHTML("afterbegin", (0, _recipeMjs.recipedeteilMarkup)(recipe));
     console.log(recipe);
 }).catch((er)=>{
     console.error("URL mal", er);
 });
+const loadrecipe = ()=>{
+    const id = location.hash.slice(1);
+    showRecipe(id).then(({ recipe })=>{
+        console.log(recipe);
+        renderSpinner.recipeContainer();
+        recipeContainer.insertAdjacentHTML("afterbegin", (0, _resultsJs.result_Markup)(recipe));
+    });
+};
+const ejemplo = {
+    cooking_time: 75
+};
+const searchhandlerreceta = ()=>{
+    const searchQuery = document.getElementById("SearchTxtInput").value;
+    console.log(searchQuery);
+    showresoults(searchQuery);
+};
+const showresoults = (query)=>{
+    fetch(`https://forkify-api.herokuapp.com/api/search?q=${query}`).then((responcedata)=>responcedata.json()).then((res)=>//console.log(res)
+        document.getElementById("result_links").innerHTML = res.recipe.map((viewresults)=>(0, _resultsJs.result_Markup)(viewresults)).join(""));
+};
+const showconsult = (recipe_id)=>{
+    fetch(`https://forkify-api.herokuapp.com/api/get?rId=${recipe_id}`).then((responcedata)=>responcedata.json()).then((res)=>//console.log(res)
+        recipeContainer.insertAdjacentHTML("afterbegin", generateMarkup(res.recipe)));
+};
+document.getElementById("result_links").innerHTML = (0, _resultsJs.result_Markup)(ejemplo);
+document.getElementById("btn_search").addEventListener("click", searchhandlerreceta);
+window.addEventListener("hashchange", loadrecipe);
 
-},{"./recipe":"b0biP"}],"b0biP":[function(require,module,exports) {
+},{"./recipe.mjs":"fydxn","./results.js":"fwhxG","./igredientlist.js":"6luAH"}],"fydxn":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "recipedeteilMarkup", ()=>recipedeteilMarkup);
@@ -685,6 +715,61 @@ exports.export = function(dest, destName, get) {
     });
 };
 
-},{}]},["aD7Zm","aenu9"], "aenu9", "parcelRequire3a11")
+},{}],"fwhxG":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "result_Markup", ()=>result_Markup);
+const result_Markup = ({ image_url, publisher, title, id, recipe_id })=>{
+    return `<li class="preview">
+    <a class="preview__link preview__link--active" href="#${id}" onclick = "showconsult(${recipe_id})">
+      <figure class="preview__fig">
+        <img src="${image_url}" alt="Test" />
+      </figure>
+      <div class="preview__data">
+        <h4 class="preview__title">${title}.</h4>
+        <p class="preview__publisher">${publisher}</p>
+        <div class="preview__user-generated">
+          <svg>
+            <use href="src/img/icons.svg#icon-user"></use>
+          </svg>
+        </div>
+      </div>
+    </a>
+  </li>`;
+};
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"6luAH":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "ingredientlist", ()=>ingredientlist);
+const ingredientlist = ({})=>` 
+<div class="recipe__ingredients">
+<h2 class="heading--2">Recipe ingredients</h2>
+<ul class="recipe__ingredient-list">
+  <li class="recipe__ingredient">
+    <svg class="recipe__icon">
+      <use href="src/img/icons.svg#icon-check"></use>
+    </svg>
+    <div class="recipe__quantity">1000</div>
+    <div class="recipe__description">
+      <span class="recipe__unit">g</span>
+      pasta
+    </div>
+  </li>
+
+  <li class="recipe__ingredient">
+    <svg class="recipe__icon">
+      <use href="src/img/icons.svg#icon-check"></use>
+    </svg>
+    <div class="recipe__quantity">0.5</div>
+    <div class="recipe__description">
+      <span class="recipe__unit">cup</span>
+      ricotta cheese
+    </div>
+  </li>
+</ul>
+</div>`;
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["aD7Zm","aenu9"], "aenu9", "parcelRequire3a11")
 
 //# sourceMappingURL=index.e37f48ea.js.map
