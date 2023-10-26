@@ -1,7 +1,7 @@
 import { recipedeteilMarkup } from "./recipe.mjs";
 import {result_Markup} from "./results.js"
 import {ingredientlist} from "./igredientlist.js"
-
+import {generateMarkup} from "./markup.js"
 
 
 const recipeContainer = document.querySelector('.recipe');
@@ -39,7 +39,7 @@ showRecipe(URL_API)
   .then(( recipe ) => {
     console.log(recipe);
     //colocamos HTML
-    recipeContainer.insertAdacentHTML('afterbegin', recipedeteilMarkup(recipe))
+    recipeContainer.insertAdjacentHTML('afterbegin', recipedeteilMarkup(recipe))
     console.log(recipe);
   })
   .catch((er) => {
@@ -74,22 +74,23 @@ showRecipe(URL_API)
   const showresoults = (query) =>{
     fetch(`https://forkify-api.herokuapp.com/api/search?q=${query}`)
     .then( (responcedata)=> responcedata.json())
-    .then((res)=> 
-    //console.log(res)
-    document.getElementById('result_links').innerHTML = res.recipe.map(viewresults => result_Markup(viewresults)).join('')
+    .then((res)=> {
+    console.log(res)
+    document.getElementById('result_links').innerHTML = res.recipes.map(viewresults => result_Markup(viewresults)).join('')
     //console.log(res.recipe)
-    )
+    })
   }
 
-  const showconsult = (recipe_id) => {
+  window.showconsult = (recipe_id) => {
     fetch (`https://forkify-api.herokuapp.com/api/get?rId=${recipe_id}`)
     .then ((responcedata)=> responcedata.json())
-    .then((res)=> 
-    //console.log(res)
+    .then((res)=>{
+    console.log(res)
+    recipeContainer.innerHTML=""
     recipeContainer.insertAdjacentHTML('afterbegin', generateMarkup(res.recipe))
     //document.getElementById('result_links').innerHTML = res.recipe.map(viewresults => result_Markup(viewresults))
     //console.log(res.recipe)
-    )
+    })
   }
 
   document.getElementById('result_links').innerHTML=result_Markup(ejemplo)

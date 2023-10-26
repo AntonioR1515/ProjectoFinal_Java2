@@ -577,6 +577,7 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
 var _recipeMjs = require("./recipe.mjs");
 var _resultsJs = require("./results.js");
 var _igredientlistJs = require("./igredientlist.js");
+var _markupJs = require("./markup.js");
 const recipeContainer = document.querySelector(".recipe");
 const timeout = function(s) {
     return new Promise(function(_, reject) {
@@ -598,7 +599,7 @@ const URL_API = "https://forkify-api.herokuapp.com/api/v2/recipes/5ed6604591c37c
 showRecipe(URL_API).then((recipe)=>{
     console.log(recipe);
     //colocamos HTML
-    recipeContainer.insertAdacentHTML("afterbegin", (0, _recipeMjs.recipedeteilMarkup)(recipe));
+    recipeContainer.insertAdjacentHTML("afterbegin", (0, _recipeMjs.recipedeteilMarkup)(recipe));
     console.log(recipe);
 }).catch((er)=>{
     console.error("URL mal", er);
@@ -620,18 +621,26 @@ const searchhandlerreceta = ()=>{
     showresoults(searchQuery);
 };
 const showresoults = (query)=>{
-    fetch(`https://forkify-api.herokuapp.com/api/search?q=${query}`).then((responcedata)=>responcedata.json()).then((res)=>//console.log(res)
-        document.getElementById("result_links").innerHTML = res.recipe.map((viewresults)=>(0, _resultsJs.result_Markup)(viewresults)).join(""));
+    fetch(`https://forkify-api.herokuapp.com/api/search?q=${query}`).then((responcedata)=>responcedata.json()).then((res)=>{
+        console.log(res);
+        document.getElementById("result_links").innerHTML = res.recipes.map((viewresults)=>(0, _resultsJs.result_Markup)(viewresults)).join("");
+    //console.log(res.recipe)
+    });
 };
-const showconsult = (recipe_id)=>{
-    fetch(`https://forkify-api.herokuapp.com/api/get?rId=${recipe_id}`).then((responcedata)=>responcedata.json()).then((res)=>//console.log(res)
-        recipeContainer.insertAdjacentHTML("afterbegin", generateMarkup(res.recipe)));
+window.showconsult = (recipe_id)=>{
+    fetch(`https://forkify-api.herokuapp.com/api/get?rId=${recipe_id}`).then((responcedata)=>responcedata.json()).then((res)=>{
+        console.log(res);
+        recipeContainer.innerHTML = "";
+        recipeContainer.insertAdjacentHTML("afterbegin", (0, _markupJs.generateMarkup)(res.recipe));
+    //document.getElementById('result_links').innerHTML = res.recipe.map(viewresults => result_Markup(viewresults))
+    //console.log(res.recipe)
+    });
 };
 document.getElementById("result_links").innerHTML = (0, _resultsJs.result_Markup)(ejemplo);
 document.getElementById("btn_search").addEventListener("click", searchhandlerreceta);
 window.addEventListener("hashchange", loadrecipe);
 
-},{"./recipe.mjs":"fydxn","./results.js":"fwhxG","./igredientlist.js":"6luAH"}],"fydxn":[function(require,module,exports) {
+},{"./recipe.mjs":"fydxn","./results.js":"fwhxG","./igredientlist.js":"6luAH","./markup.js":"3TIfq"}],"fydxn":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "recipedeteilMarkup", ()=>recipedeteilMarkup);
@@ -769,6 +778,56 @@ const ingredientlist = ({})=>`
   </li>
 </ul>
 </div>`;
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"3TIfq":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "generateMarkup", ()=>generateMarkup);
+const generateMarkup = ({ cooking_time })=>{
+    return `
+<div class="recipe__details">
+<div class="recipe__info">
+  <svg class="recipe__info-icon">
+    <use href="src/img/icons.svg#icon-clock"></use>
+  </svg>
+  <span class="recipe__info-data recipe__info-data--minutes">${cooking_time}</span>
+  <span class="recipe__info-text">minutes</span>
+</div>
+<div class="recipe__info">
+  <svg class="recipe__info-icon">
+    <use href="src/img/icons.svg#icon-users"></use>
+  </svg>
+  <span class="recipe__info-data recipe__info-data--people">4</span>
+  <span class="recipe__info-text">servings</span>
+
+  <div class="recipe__info-buttons">
+    <button class="btn--tiny btn--increase-servings">
+      <svg>
+        <use href="src/img/icons.svg#icon-minus-circle"></use>
+      </svg>
+    </button>
+    <button class="btn--tiny btn--increase-servings">
+      <svg>
+        <use href="src/img/icons.svg#icon-plus-circle"></use>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<div class="recipe__user-generated">
+  <svg>
+    <use href="src/img/icons.svg#icon-user"></use>
+  </svg>
+</div>
+<button class="btn--round">
+  <svg class="">
+    <use href="src/img/icons.svg#icon-bookmark-fill"></use>
+  </svg>
+</button>
+</div>
+
+`;
+};
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["aD7Zm","aenu9"], "aenu9", "parcelRequire3a11")
 
