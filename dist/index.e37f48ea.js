@@ -632,11 +632,13 @@ window.showconsult = (recipe_id)=>{
         console.log(res);
         recipeContainer.innerHTML = "";
         recipeContainer.insertAdjacentHTML("afterbegin", (0, _markupJs.generateMarkup)(res.recipe));
-    //document.getElementById('result_links').innerHTML = res.recipe.map(viewresults => result_Markup(viewresults))
-    //console.log(res.recipe)
+        //showRecipe(URL_API)
+        // recipeContainer.insertAdjacentHTML('afterbegin', recipedeteilMarkup(res.recipe)) 
+        //document.getElementById('result_links').innerHTML = res.recipe.map(viewresults => result_Markup(viewresults))
+        console.log(res.recipe);
     });
 };
-document.getElementById("result_links").innerHTML = (0, _resultsJs.result_Markup)(ejemplo);
+//document.getElementById('result_links').innerHTML=result_Markup(ejemplo)
 document.getElementById("btn_search").addEventListener("click", searchhandlerreceta);
 window.addEventListener("hashchange", loadrecipe);
 
@@ -644,11 +646,11 @@ window.addEventListener("hashchange", loadrecipe);
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "recipedeteilMarkup", ()=>recipedeteilMarkup);
-const recipedeteilMarkup = ({ cooking_time, servings })=>`
+const recipedeteilMarkup = ({ cooking_time, servings, title })=>`
 <figure class="recipe__fig">
           <img src="src/img/test-1.jpg" alt="Tomato" class="recipe__img" />
           <h1 class="recipe__title">
-            <span>Pasta with tomato cream sauce</span>
+            <span>${title}</span>
           </h1>
         </figure>
 
@@ -751,7 +753,7 @@ const result_Markup = ({ image_url, publisher, title, id, recipe_id })=>{
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "ingredientlist", ()=>ingredientlist);
-const ingredientlist = ({})=>` 
+const ingredientlist = ({ ingredients })=>` 
 <div class="recipe__ingredients">
 <h2 class="heading--2">Recipe ingredients</h2>
 <ul class="recipe__ingredient-list">
@@ -783,12 +785,18 @@ const ingredientlist = ({})=>`
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "generateMarkup", ()=>generateMarkup);
-const generateMarkup = ({ cooking_time })=>{
+const generateMarkup = ({ cooking_time = 30, image_url, publisher = "Antonio", title })=>{
     return `
+<figure class="recipe__fig">
+<img src="${image_url}" alt="Tomato" class="recipe__img" />
+<h1 class="recipe__title">
+  <span>${title}</span>
+</h1>
+</figure>
 <div class="recipe__details">
 <div class="recipe__info">
   <svg class="recipe__info-icon">
-    <use href="src/img/icons.svg#icon-clock"></use>
+    <use href=""></use>
   </svg>
   <span class="recipe__info-data recipe__info-data--minutes">${cooking_time}</span>
   <span class="recipe__info-text">minutes</span>

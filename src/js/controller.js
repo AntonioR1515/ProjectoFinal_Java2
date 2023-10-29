@@ -88,11 +88,15 @@ showRecipe(URL_API)
     console.log(res)
     recipeContainer.innerHTML=""
     recipeContainer.insertAdjacentHTML('afterbegin', generateMarkup(res.recipe))
+
+    //showRecipe(URL_API)
+   // recipeContainer.insertAdjacentHTML('afterbegin', recipedeteilMarkup(res.recipe)) 
     //document.getElementById('result_links').innerHTML = res.recipe.map(viewresults => result_Markup(viewresults))
-    //console.log(res.recipe)
+    console.log(res.recipe)
     })
   }
 
-  document.getElementById('result_links').innerHTML=result_Markup(ejemplo)
-  document.getElementById('btn_search').addEventListener("click",searchhandlerreceta)
+
+//document.getElementById('result_links').innerHTML=result_Markup(ejemplo)
+document.getElementById('btn_search').addEventListener("click",searchhandlerreceta)
 window.addEventListener('hashchange', loadrecipe)

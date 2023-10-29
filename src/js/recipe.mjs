@@ -1,8 +1,8 @@
-export const recipedeteilMarkup = ({cooking_time,servings}) => `
+export const recipedeteilMarkup = ({cooking_time,servings,title,}) => `
 <figure class="recipe__fig">
           <img src="src/img/test-1.jpg" alt="Tomato" class="recipe__img" />
           <h1 class="recipe__title">
-            <span>Pasta with tomato cream sauce</span>
+            <span>${title}</span>
           </h1>
         </figure>
 

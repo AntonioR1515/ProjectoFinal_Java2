@@ -1,9 +1,15 @@
-export const generateMarkup=({cooking_time}) =>{
+export const generateMarkup=({cooking_time =30 , image_url, publisher ="Antonio", title}) =>{
 return(`
+<figure class="recipe__fig">
+<img src="${image_url}" alt="Tomato" class="recipe__img" />
+<h1 class="recipe__title">
+  <span>${title}</span>
+</h1>
+</figure>
 <div class="recipe__details">
 <div class="recipe__info">
   <svg class="recipe__info-icon">
-    <use href="src/img/icons.svg#icon-clock"></use>
+    <use href=""></use>
   </svg>
   <span class="recipe__info-data recipe__info-data--minutes">${cooking_time}</span>
   <span class="recipe__info-text">minutes</span>
